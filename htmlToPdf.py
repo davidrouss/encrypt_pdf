@@ -1,12 +1,13 @@
 import pdfkit
 import config
 import sys
-
 from PyPDF2 import PdfReader, PdfWriter
 
 
 def convert_html_to_pdf(url: str) -> None:
     try: 
+        
+        # Conversion
         pdfkit.from_url(url, output_path=config.OUTPUT, configuration=config.CONFIG)
         print("Conversion OK!")
 
@@ -20,15 +21,18 @@ def encrypt_with_password(password: str) -> None:
     writer = PdfWriter()
 
     try:
+        # rewrite file before encryption
         for page in reader.pages:
             writer.add_page(page)
-    
+
+        # Encryption
         writer.encrypt(password)
 
     except(Exception,) as error:
         print(error)
 
     try:
+        # Save new file encryted
         with open(config.ENCRYPTED_FILE, "wb") as encrypted_file:
             writer.write(encrypted_file)
 
